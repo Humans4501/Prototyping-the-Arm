@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Arm subsystem
- * I
  */
 public class Arm extends SubsystemBase {
 	private final int kArmLeftCanID = 40;
@@ -23,9 +22,11 @@ public class Arm extends SubsystemBase {
 	/** Follows the right motor controller */
 	private final CANSparkMax mArmLeft = new CANSparkMax(kArmLeftCanID, MotorType.kBrushless);
 	private final CANSparkMax mArmRight = new CANSparkMax(kArmRightCanID, MotorType.kBrushless);
-	
+
 	private final DutyCycleEncoder mArmEnc = new DutyCycleEncoder(kEncoderDIO);
+	/** PID: attempt to use same gains as the SparkMAX */
 	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
+	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rad, A:(volt*sec^2)/rad */
 	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
 
 	private double mSet, mP, mI, mD, mFfks, mFfkg, mFfkv;
@@ -38,11 +39,11 @@ public class Arm extends SubsystemBase {
 		return this.run(() -> {
 			double set = SmartDashboard.getNumber("Set Motor", 0.0);
 			double p = SmartDashboard.getNumber("P", 0.0);
-			double i = SmartDashboard.getNumber("P", 0.0);
-			double d = SmartDashboard.getNumber("P", 0.0);
-			double s = SmartDashboard.getNumber("P", 0.0);
-			double g = SmartDashboard.getNumber("P", 0.0);
-			double v = SmartDashboard.getNumber("P", 0.0);
+			double i = SmartDashboard.getNumber("i", 0.0);
+			double d = SmartDashboard.getNumber("d", 0.0);
+			double s = SmartDashboard.getNumber("g", 0.0);
+			double g = SmartDashboard.getNumber("v", 0.0);
+			double v = SmartDashboard.getNumber("a", 0.0);
 			if(mSet != set) { this.mSet = set; this.mArmRight.set(set); }
 			if(mP != p) { this.mP = p; this.mArmPid.setP(p); }
 			if(mI != i) { this.mI = i; this.mArmPid.setI(i); }
