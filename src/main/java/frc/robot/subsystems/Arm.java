@@ -26,7 +26,7 @@ public class Arm extends SubsystemBase {
 	private final DutyCycleEncoder mArmEnc = new DutyCycleEncoder(kEncoderDIO);
 	/** PID: attempt to use same gains as the SparkMAX */
 	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
-	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rad, A:(volt*sec^2)/rad */
+	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rot, A:(volt*sec^2)/rot */
 	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
 
 	private double mSet, mP, mI, mD, mFfks, mFfkg, mFfkv;
@@ -38,6 +38,7 @@ public class Arm extends SubsystemBase {
 	public Command cmdRun() {
 		return this.run(() -> {
 			double set = SmartDashboard.getNumber("Set Motor", 0.0);
+			double rot = SmartDashboard.getNumber("Set Rotations", 0.0);
 			double p = SmartDashboard.getNumber("P", 0.0);
 			double i = SmartDashboard.getNumber("i", 0.0);
 			double d = SmartDashboard.getNumber("d", 0.0);
@@ -51,6 +52,11 @@ public class Arm extends SubsystemBase {
 			if(mFfks != s) { this.mFfks = s; this.mArmFf.setS(s); }
 			if(mFfkg != g) { this.mFfkg = g; this.mArmFf.setG(g); }
 			if(mFfkv != v) { this.mFfkv = v; this.mArmFf.setV(v); }
+
+			// this.mArmRight.setVoltage(
+			// 	this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
+			// 	this.mArmFf.calculate(rot, 0.0)
+			// );
 		});
 	}
 
