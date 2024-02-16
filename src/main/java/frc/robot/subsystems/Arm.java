@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +26,7 @@ public class Arm extends SubsystemBase {
 	
 	private final DutyCycleEncoder mArmEnc = new DutyCycleEncoder(kEncoderDIO);
 	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
-	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0);
+	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
 
 	private double mSet, mP, mI, mD, mFfks, mFfkg, mFfkv;
 
@@ -45,12 +44,12 @@ public class Arm extends SubsystemBase {
 			double g = SmartDashboard.getNumber("P", 0.0);
 			double v = SmartDashboard.getNumber("P", 0.0);
 			if(mSet != set) { this.mSet = set; this.mArmRight.set(set); }
-			if(mP != p) { this.mP = p; this.mArmRight.set(p); }
-			if(mI != i) { this.mI = i; this.mArmRight.set(i); }
-			if(mD != d) { this.mD = d; this.mArmRight.set(d); }
-			if(mFfks != s) { this.mFfks = s; this.mArmRight.set(s); }
-			if(mFfkg != g) { this.mFfkg = g; this.mArmRight.set(g); }
-			if(mFfkv != v) { this.mFfkv = v; this.mArmRight.set(v); }
+			if(mP != p) { this.mP = p; this.mArmPid.setP(p); }
+			if(mI != i) { this.mI = i; this.mArmPid.setI(i); }
+			if(mD != d) { this.mD = d; this.mArmPid.setD(d); }
+			if(mFfks != s) { this.mFfks = s; this.mArmFf.setS(s); }
+			if(mFfkg != g) { this.mFfkg = g; this.mArmFf.setG(g); }
+			if(mFfkv != v) { this.mFfkv = v; this.mArmFf.setV(v); }
 		});
 	}
 
