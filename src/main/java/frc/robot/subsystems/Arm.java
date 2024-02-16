@@ -40,7 +40,7 @@ public class Arm extends SubsystemBase {
 	public Command cmdRun() {
 		return this.run(() -> {
 			double set = SmartDashboard.getNumber(kSetName, 0.0);
-			if(mSet != set) this.mArmRight.set(set);
+			if(mSet != set) { this.mSet = set; this.mArmRight.set(set); }
 		});
 	}
 
