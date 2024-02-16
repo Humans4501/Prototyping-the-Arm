@@ -21,8 +21,6 @@ public class Arm extends SubsystemBase {
 
 	private final double kPosOffset = 0.0;
 
-	private static final String kSetName = "Set Motor";
-
 	/** Follows the right motor controller */
 	private final CANSparkMax mArmLeft = new CANSparkMax(kArmLeftCanID, MotorType.kBrushless);
 	private final CANSparkMax mArmRight = new CANSparkMax(kArmRightCanID, MotorType.kBrushless);
@@ -31,7 +29,7 @@ public class Arm extends SubsystemBase {
 	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
 	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0);
 
-	private double mSet;
+	private double mSet, mP, mI, mD, mFfks, mFfkg, mFfkv;
 
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
@@ -39,8 +37,20 @@ public class Arm extends SubsystemBase {
 
 	public Command cmdRun() {
 		return this.run(() -> {
-			double set = SmartDashboard.getNumber(kSetName, 0.0);
+			double set = SmartDashboard.getNumber("Set Motor", 0.0);
+			double p = SmartDashboard.getNumber("P", 0.0);
+			double i = SmartDashboard.getNumber("P", 0.0);
+			double d = SmartDashboard.getNumber("P", 0.0);
+			double s = SmartDashboard.getNumber("P", 0.0);
+			double g = SmartDashboard.getNumber("P", 0.0);
+			double v = SmartDashboard.getNumber("P", 0.0);
 			if(mSet != set) { this.mSet = set; this.mArmRight.set(set); }
+			if(mP != p) { this.mP = p; this.mArmRight.set(p); }
+			if(mI != i) { this.mI = i; this.mArmRight.set(i); }
+			if(mD != d) { this.mD = d; this.mArmRight.set(d); }
+			if(mFfks != s) { this.mFfks = s; this.mArmRight.set(s); }
+			if(mFfkg != g) { this.mFfkg = g; this.mArmRight.set(g); }
+			if(mFfkv != v) { this.mFfkv = v; this.mArmRight.set(v); }
 		});
 	}
 
