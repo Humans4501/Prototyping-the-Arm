@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
@@ -18,13 +19,13 @@ import frc.robot.subsystems.Arm;
  */
 public class RobotContainer {
 	private final Arm sArm = new Arm();
-	
+
+	private final CommandJoystick mJoy = new CommandJoystick(0);
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		this.configureBindings();
-
-		this.sArm.setDefaultCommand(this.sArm.cmdRun());
 	}
 
 	/**
@@ -39,6 +40,8 @@ public class RobotContainer {
 	private void configureBindings() {
 		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
+
+		this.mJoy.button(0).whileTrue(this.sArm.cmdRun());
 	}
 
 	/**

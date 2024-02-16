@@ -33,13 +33,27 @@ public class Arm extends SubsystemBase {
 
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
+
+		SmartDashboard.putNumber("Set Motor", 0.0);
+		SmartDashboard.putNumber("Set Rotations", 0.0);
+		SmartDashboard.putNumber("p", 0.0);
+		SmartDashboard.putNumber("i", 0.0);
+		SmartDashboard.putNumber("d", 0.0);
+		SmartDashboard.putNumber("g", 0.0);
+		SmartDashboard.putNumber("v", 0.0);
+		SmartDashboard.putNumber("a", 0.0);
+
+		this.setDefaultCommand(this.run(() -> {
+			this.mArmRight.stopMotor();
+			this.mArmLeft.stopMotor();
+		}));
 	}
 
 	public Command cmdRun() {
 		return this.run(() -> {
 			double set = SmartDashboard.getNumber("Set Motor", 0.0);
 			double rot = SmartDashboard.getNumber("Set Rotations", 0.0);
-			double p = SmartDashboard.getNumber("P", 0.0);
+			double p = SmartDashboard.getNumber("p", 0.0);
 			double i = SmartDashboard.getNumber("i", 0.0);
 			double d = SmartDashboard.getNumber("d", 0.0);
 			double s = SmartDashboard.getNumber("g", 0.0);
