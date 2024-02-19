@@ -59,6 +59,7 @@ public class Arm extends SubsystemBase {
 			double s = SmartDashboard.getNumber("g", 0.0);
 			double g = SmartDashboard.getNumber("v", 0.0);
 			double v = SmartDashboard.getNumber("a", 0.0);
+
 			if(mSet != set) { this.mSet = set; this.mArmRight.set(set); }
 			if(mP != p) { this.mP = p; this.mArmPid.setP(p); }
 			if(mI != i) { this.mI = i; this.mArmPid.setI(i); }
@@ -67,10 +68,10 @@ public class Arm extends SubsystemBase {
 			if(mFfkg != g) { this.mFfkg = g; this.mArmFf.setG(g); }
 			if(mFfkv != v) { this.mFfkv = v; this.mArmFf.setV(v); }
 
-			// this.mArmRight.setVoltage(
-			// 	this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
-			// 	this.mArmFf.calculate(rot, 0.0)
-			// );
+			SmartDashboard.putNumber("MotorVoltage",
+				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
+				this.mArmFf.calculate(rot * 2.0 * Math.PI, 0.0)
+			);
 		});
 	}
 
