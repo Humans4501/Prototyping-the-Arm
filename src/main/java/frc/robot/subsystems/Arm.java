@@ -42,6 +42,7 @@ public class Arm extends SubsystemBase {
 		SmartDashboard.putNumber("g", 0.0);
 		SmartDashboard.putNumber("v", 0.0);
 		SmartDashboard.putNumber("a", 0.0);
+		SmartDashboard.putNumber("MotorVoltage", 0.0);
 
 		this.setDefaultCommand(this.run(() -> {
 			this.mArmRight.stopMotor();
