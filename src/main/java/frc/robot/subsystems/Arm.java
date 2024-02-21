@@ -5,10 +5,18 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.Velocity;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * Arm subsystem
@@ -29,6 +37,29 @@ public class Arm extends SubsystemBase {
 	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
 	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rot, A:(volt*sec^2)/rot */
 	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
+
+	private final MutableMeasure<Voltage> mAppliedVolts = MutableMeasure.mutable(Units.Volts.of(0.0));
+	private final MutableMeasure<Angle> mArmPos = MutableMeasure.mutable(Units.Radians.of(0.0));
+	private final MutableMeasure<Velocity<Angle>> mArmVel = MutableMeasure.mutable(Units.RadiansPerSecond.of(0.0));
+
+	private final SysIdRoutine mSysIdRout = new SysIdRoutine(
+		new SysIdRoutine.Config(),
+		new SysIdRoutine.Mechanism(
+			(Measure<Voltage> volts) -> {
+				this.mArmRight.set(volts.in(Units.Volts) / RobotController.getBatteryVoltage());
+			},
+			log -> {
+				log.motor("arm-motor")
+					.voltage(this.mAppliedVolts.mut_replace(
+						this.mArmRight.get() * RobotController.getBatteryVoltage(), Units.Volts
+					))
+					.angularPosition(this.mArmPos.mut_replace(
+						0.0, Units.Rotations
+					));
+			},
+			this
+		)
+	);
 
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
