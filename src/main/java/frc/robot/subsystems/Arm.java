@@ -3,8 +3,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
@@ -34,10 +32,6 @@ public class Arm extends SubsystemBase {
 	private final CANSparkMax mArmRight = new CANSparkMax(kArmRightCanID, MotorType.kBrushless);
 
 	private final DutyCycleEncoder mArmEnc = new DutyCycleEncoder(kEncoderDIO);
-	/** PID: attempt to use same gains as the SparkMAX */
-	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
-	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rot, A:(volt*sec^2)/rot */
-	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
 
 	/** Arm encoder position (radians) */
 	private double mArmEncPos = 0.0;
@@ -80,17 +74,6 @@ public class Arm extends SubsystemBase {
 			this.mArmRight.stopMotor();
 			this.mArmLeft.stopMotor();
 		}));
-	}
-
-	public Command cmdRun() {
-		return this.run(() -> {
-			double rot = SmartDashboard.getNumber("Set Radians", 0.0);
-
-			SmartDashboard.putNumber("MotorVoltage",
-				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
-				this.mArmFf.calculate(rot * 2.0 * Math.PI, 0.0)
-			);
-		});
 	}
 
 	@Override

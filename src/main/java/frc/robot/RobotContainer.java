@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -40,8 +41,10 @@ public class RobotContainer {
 	private void configureBindings() {
 		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
-
-		this.mJoy.button(0).whileTrue(this.sArm.cmdRun());
+		this.mJoy.button(0).whileTrue(this.sArm.cmdQuasistatic(Direction.kForward));
+		this.mJoy.button(1).whileTrue(this.sArm.cmdQuasistatic(Direction.kReverse));
+		this.mJoy.button(2).whileTrue(this.sArm.cmdDynamic(Direction.kForward));
+		this.mJoy.button(3).whileTrue(this.sArm.cmdDynamic(Direction.kReverse));
 	}
 
 	/**
