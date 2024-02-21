@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 /**
  * Arm subsystem
@@ -38,6 +39,9 @@ public class Arm extends SubsystemBase {
 	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rot, A:(volt*sec^2)/rot */
 	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
 
+	private double mArmEncPos = 0.0;
+	private double mArmEncVel = 0.0;
+
 	private final MutableMeasure<Voltage> mAppliedVolts = MutableMeasure.mutable(Units.Volts.of(0.0));
 	private final MutableMeasure<Angle> mArmPos = MutableMeasure.mutable(Units.Radians.of(0.0));
 	private final MutableMeasure<Velocity<Angle>> mArmVel = MutableMeasure.mutable(Units.RadiansPerSecond.of(0.0));
@@ -54,7 +58,10 @@ public class Arm extends SubsystemBase {
 						this.mArmRight.get() * RobotController.getBatteryVoltage(), Units.Volts
 					))
 					.angularPosition(this.mArmPos.mut_replace(
-						0.0, Units.Rotations
+						this.mArmEncPos * 2.0 * Math.PI, Units.Radians
+					))
+					.angularVelocity(this.mArmVel.mut_replace(
+						this.mArmEncVel * 2.0 * Math.PI / 60.0, Units.RadiansPerSecond
 					));
 			},
 			this
@@ -88,6 +95,16 @@ public class Arm extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Encoder", this.mArmEnc.getAbsolutePosition() - kPosOffset);
+		double pos = this.mArmEnc.getAbsolutePosition();
+		this.mArmEncVel = (pos - this.mArmEncPos) / 0.02 / 60.0; // Rotations per minute
+		this.mArmEncPos = this.mArmEnc.getAbsolutePosition() - kPosOffset;
 	}
+
+	public Command cmdQuasistatic(final Direction dir) {
+		return this.mSysIdRout.quasistatic(dir);
+	}
+
+	public Command cmdDynamic(final Direction dir) {
+		return this.mSysIdRout.quasistatic(dir);
+	}	
 }
