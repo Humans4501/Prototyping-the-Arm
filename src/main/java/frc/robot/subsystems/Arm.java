@@ -39,7 +39,9 @@ public class Arm extends SubsystemBase {
 	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rot, A:(volt*sec^2)/rot */
 	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
 
+	/** Arm encoder position (radians) */
 	private double mArmEncPos = 0.0;
+	/** Arm encoder velocity (radians/second) */
 	private double mArmEncVel = 0.0;
 
 	private final MutableMeasure<Voltage> mAppliedVolts = MutableMeasure.mutable(Units.Volts.of(0.0));
