@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase {
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
 
-		SmartDashboard.putNumber("Set Rotations", 0.0);
+		SmartDashboard.putNumber("Set Radians", 0.0);
 		SmartDashboard.putNumber("MotorVoltage", 0.0);
 
 		this.setDefaultCommand(this.run(() -> {
@@ -44,7 +44,7 @@ public class Arm extends SubsystemBase {
 
 	public Command cmdRun() {
 		return this.run(() -> {
-			double rot = SmartDashboard.getNumber("Set Rotations", 0.0);
+			double rot = SmartDashboard.getNumber("Set Radians", 0.0);
 
 			SmartDashboard.putNumber("MotorVoltage",
 				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
