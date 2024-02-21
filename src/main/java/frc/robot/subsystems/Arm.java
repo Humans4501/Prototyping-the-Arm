@@ -33,7 +33,6 @@ public class Arm extends SubsystemBase {
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
 
-		SmartDashboard.putNumber("Set Motor", 0.0);
 		SmartDashboard.putNumber("Set Rotations", 0.0);
 		SmartDashboard.putNumber("MotorVoltage", 0.0);
 
@@ -45,7 +44,6 @@ public class Arm extends SubsystemBase {
 
 	public Command cmdRun() {
 		return this.run(() -> {
-			double set = SmartDashboard.getNumber("Set Motor", 0.0);
 			double rot = SmartDashboard.getNumber("Set Rotations", 0.0);
 
 			SmartDashboard.putNumber("MotorVoltage",
