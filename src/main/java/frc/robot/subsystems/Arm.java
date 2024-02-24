@@ -25,7 +25,7 @@ public class Arm extends SubsystemBase {
 	private final int kArmRightCanID = 41;
 	private final int kEncoderDIO = 0;
 
-	private final double kPosOffset = 0.0;
+	private final double kPosOffset = 1.0;
 
 	/** Follows the right motor controller */
 	private final CANSparkMax mArmLeft = new CANSparkMax(kArmLeftCanID, MotorType.kBrushless);
@@ -80,7 +80,7 @@ public class Arm extends SubsystemBase {
 	public void periodic() {
 		double pos = this.mArmEnc.getAbsolutePosition();
 		this.mArmEncVel = (pos - this.mArmEncPos) / 0.02 / 60.0; // Rotations per minute
-		this.mArmEncPos = this.mArmEnc.getAbsolutePosition() - kPosOffset;
+		this.mArmEncPos = -this.mArmEnc.getAbsolutePosition() + kPosOffset;
 	}
 
 	public Command cmdQuasistatic(final Direction dir) {
