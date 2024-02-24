@@ -41,7 +41,7 @@ public class RobotContainer {
 		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
 
-		this.mJoy.button(0).whileTrue(this.sArm.cmdRun());
+		this.mJoy.button(1).whileTrue(this.sArm.cmdRun());
 	}
 
 	/**
