@@ -33,9 +33,9 @@ public class Arm extends SubsystemBase {
 
 	private final DutyCycleEncoder mArmEnc = new DutyCycleEncoder(kEncoderDIO);
 
-	/** Arm encoder position (radians) */
+	/** Arm encoder position (rotations) */
 	private double mArmEncPos = 0.0;
-	/** Arm encoder velocity (radians/second) */
+	/** Arm encoder velocity (rotations/second) */
 	private double mArmEncVel = 0.0;
 
 	private final MutableMeasure<Voltage> mAppliedVolts = MutableMeasure.mutable(Units.Volts.of(0.0));
@@ -57,7 +57,7 @@ public class Arm extends SubsystemBase {
 						this.mArmEncPos * 2.0 * Math.PI, Units.Radians
 					))
 					.angularVelocity(this.mArmVel.mut_replace(
-						this.mArmEncVel * 2.0 * Math.PI / 60.0, Units.RadiansPerSecond
+						this.mArmEncVel * 2.0 * Math.PI, Units.RadiansPerSecond
 					));
 			},
 			this
@@ -79,7 +79,7 @@ public class Arm extends SubsystemBase {
 	@Override
 	public void periodic() {
 		double pos = this.mArmEnc.getAbsolutePosition();
-		this.mArmEncVel = (pos - this.mArmEncPos) / 0.02 / 60.0; // Rotations per minute
+		this.mArmEncVel = (pos - this.mArmEncPos) / 0.02; // Rotations per second
 		this.mArmEncPos = -this.mArmEnc.getAbsolutePosition() + kPosOffset;
 	}
 
