@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
  * Arm subsystem
  */
 public class Arm extends SubsystemBase {
-	private final int kArmLeftCanID = 40;
-	private final int kArmRightCanID = 41;
+	private final int kArmLeftCanID = 35;
+	private final int kArmRightCanID = 34;
 	private final int kEncoderDIO = 0;
 
 	private final double kPosOffset = 1.0 - 0.000835;
@@ -78,9 +78,12 @@ public class Arm extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double pos = this.mArmEnc.getAbsolutePosition();
+		double pos = -this.mArmEnc.getAbsolutePosition() + kPosOffset;
 		this.mArmEncVel = (pos - this.mArmEncPos) / 0.02; // Rotations per second
-		this.mArmEncPos = -this.mArmEnc.getAbsolutePosition() + kPosOffset;
+		this.mArmEncPos = pos;
+
+		SmartDashboard.putNumber("ArmEncVel", this.mArmEncVel);
+		SmartDashboard.putNumber("ArmEncPos", this.mArmEncPos);
 	}
 
 	public Command cmdQuasistatic(final Direction dir) {
