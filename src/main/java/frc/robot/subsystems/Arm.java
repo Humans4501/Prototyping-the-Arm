@@ -15,7 +15,7 @@ public class Arm extends SubsystemBase {
 	private final int kArmLeftCanID = 35;
 	private final int kArmRightCanID = 34;
 
-	private final double kPosOffset = 1.0;
+	private final double kPosOffset = 1.0 - 0.000835;
 
 	/** Follows the right motor controller */
 	private final CANSparkMax mArmLeft = new CANSparkMax(kArmLeftCanID, MotorType.kBrushless);
