@@ -43,7 +43,9 @@ public class Arm extends SubsystemBase {
 	private final MutableMeasure<Velocity<Angle>> mArmVel = MutableMeasure.mutable(Units.RadiansPerSecond.of(0.0));
 
 	private final SysIdRoutine mSysIdRout = new SysIdRoutine(
-		new SysIdRoutine.Config(),
+		new SysIdRoutine.Config(
+			null, Units.Volts.of(1.2), null, null
+		),
 		new SysIdRoutine.Mechanism(
 			(Measure<Voltage> volts) -> {
 				this.mArmRight.set(volts.in(Units.Volts) / RobotController.getBatteryVoltage());
@@ -66,9 +68,6 @@ public class Arm extends SubsystemBase {
 
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
-
-		SmartDashboard.putNumber("Set Radians", 0.0);
-		SmartDashboard.putNumber("MotorVoltage", 0.0);
 
 		this.setDefaultCommand(this.run(() -> {
 			this.mArmRight.stopMotor();
