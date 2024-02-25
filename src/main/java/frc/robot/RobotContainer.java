@@ -41,10 +41,10 @@ public class RobotContainer {
 	private void configureBindings() {
 		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
-		this.mJoy.button(0).whileTrue(this.sArm.cmdQuasistatic(Direction.kForward));
-		this.mJoy.button(1).whileTrue(this.sArm.cmdQuasistatic(Direction.kReverse));
-		this.mJoy.button(2).whileTrue(this.sArm.cmdDynamic(Direction.kForward));
-		this.mJoy.button(3).whileTrue(this.sArm.cmdDynamic(Direction.kReverse));
+		this.mJoy.button(1).whileTrue(this.sArm.cmdQuasistatic(Direction.kForward));
+		this.mJoy.button(2).whileTrue(this.sArm.cmdQuasistatic(Direction.kReverse));
+		this.mJoy.button(3).whileTrue(this.sArm.cmdDynamic(Direction.kForward));
+		this.mJoy.button(4).whileTrue(this.sArm.cmdDynamic(Direction.kReverse));
 	}
 
 	/**

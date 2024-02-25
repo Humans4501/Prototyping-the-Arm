@@ -89,5 +89,5 @@ public class Arm extends SubsystemBase {
 
 	public Command cmdDynamic(final Direction dir) {
 		return this.mSysIdRout.quasistatic(dir);
-	}	
+	}
 }
