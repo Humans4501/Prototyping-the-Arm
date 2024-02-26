@@ -42,6 +42,7 @@ public class RobotContainer {
 		// new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
 
 		this.mJoy.button(1).whileTrue(this.sArm.cmdRun());
+		this.mJoy.button(2).whileTrue(this.sArm.cmdFollowOsc());
 	}
 
 	/**
