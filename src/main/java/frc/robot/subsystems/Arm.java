@@ -41,6 +41,15 @@ public class Arm extends SubsystemBase {
 		});
 	}
 
+	public Command cmdRunReverse() {
+		return this.run(() -> {
+			double set = SmartDashboard.getNumber("SetMotor", 0.0);
+
+			this.mArmRight.set(-set);
+		});
+
+	}
+
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Encoder", -this.mEncoder.getAbsolutePosition() + kPosOffset);
