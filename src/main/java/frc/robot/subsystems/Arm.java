@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /* -- Calculated Gains --
@@ -62,22 +63,32 @@ public class Arm extends SubsystemBase {
 		this.setDefaultCommand(this.run(() -> {
 			this.mArmRight.stopMotor();
 			this.mArmLeft.stopMotor();
+			this.mArmPid.setSetpoint(this.getEncoderDist());
 		}));
 	}
 
 	public Command cmdRun() {
-		return this.run(() -> {
-			double rot = SmartDashboard.getNumber("Set Radians", 0.0);
+		return Commands.sequence(
+			this.runOnce(() -> {
+				this.mArmPid.setSetpoint(SmartDashboard.getNumber("Set Radians", 0.0));
+			}),
+			this.run(() -> {
+				double rot = SmartDashboard.getNumber("Set Radians", 0.0);
 
-			SmartDashboard.putNumber("MotorVoltage",
-				this.mArmPid.calculate(this.mArmEnc.getDistance() * 2.0 * Math.PI) +
-				this.mArmFf.calculate(rot, 0.0)
-			);
-		});
+				SmartDashboard.putNumber("MotorVoltage",
+					this.mArmPid.calculate(this.getEncoderDist()) +
+					this.mArmFf.calculate(rot, 0.0)
+				);
+			})
+		);
 	}
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Encoder", (this.mArmEnc.getAbsolutePosition() * 2.0 * Math.PI) - kPosOffset);
+		SmartDashboard.putNumber("Encoder", this.getEncoderDist());
+	}
+
+	private double getEncoderDist() {
+		return (this.mArmEnc.getDistance() - kPosOffset) * 2.0 * Math.PI;
 	}
 }
