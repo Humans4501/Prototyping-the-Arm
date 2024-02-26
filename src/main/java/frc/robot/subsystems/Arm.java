@@ -10,6 +10,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/* -- Calculated Gains --
+ * kS : 0.34018
+ * kV : 6.4525
+ * kA : 11.213
+ * kG : 0.21586
+ * 
+ * - REV Brushless Encoder PID
+ * kP : 5.8225
+ * kD : 3.4811
+ * 
+ * - WPILib 2020 <
+ * kP : 67.437
+ * kD : 40.744
+ */
+
+
 /**
  * Arm subsystem
  */
