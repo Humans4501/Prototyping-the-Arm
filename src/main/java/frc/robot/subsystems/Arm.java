@@ -47,7 +47,6 @@ public class Arm extends SubsystemBase {
 
 			this.mArmRight.set(-set);
 		});
-
 	}
 
 	@Override
