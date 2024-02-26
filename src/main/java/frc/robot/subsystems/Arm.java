@@ -89,6 +89,6 @@ public class Arm extends SubsystemBase {
 	}
 
 	private double getEncoderDist() {
-		return (this.mArmEnc.getDistance() - kPosOffset) * 2.0 * Math.PI;
+		return (-this.mArmEnc.getDistance() + kPosOffset) * 2.0 * Math.PI;
 	}
 }
