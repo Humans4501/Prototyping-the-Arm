@@ -48,7 +48,7 @@ public class Arm extends SubsystemBase {
 
 			SmartDashboard.putNumber("MotorVoltage",
 				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
-				this.mArmFf.calculate(rot * 2.0 * Math.PI, 0.0)
+				this.mArmFf.calculate(rot, 0.0)
 			);
 		});
 	}
