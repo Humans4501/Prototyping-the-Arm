@@ -37,8 +37,8 @@ public class Arm extends SubsystemBase {
 	private static final double kP = 67.437;
 	private static final double kD = 40.744;
 
-	private final int kArmLeftCanID = 40;
-	private final int kArmRightCanID = 41;
+	private final int kArmLeftCanID = 35;
+	private final int kArmRightCanID = 34;
 	private final int kEncoderDIO = 0;
 
 	private final double kPosOffset = 1.0 - 0.000835;
