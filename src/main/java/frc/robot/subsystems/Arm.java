@@ -18,7 +18,7 @@ public class Arm extends SubsystemBase {
 	private final int kArmRightCanID = 41;
 	private final int kEncoderDIO = 0;
 
-	private final double kPosOffset = 0.0;
+	private final double kPosOffset = 1.0 - 0.000835;
 
 	/** Follows the right motor controller */
 	private final CANSparkMax mArmLeft = new CANSparkMax(kArmLeftCanID, MotorType.kBrushless);
@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase {
 			double rot = SmartDashboard.getNumber("Set Radians", 0.0);
 
 			SmartDashboard.putNumber("MotorVoltage",
-				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition()) +
+				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition() * 2.0 * Math.PI) +
 				this.mArmFf.calculate(rot, 0.0)
 			);
 		});
@@ -55,6 +55,6 @@ public class Arm extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Encoder", this.mArmEnc.getAbsolutePosition() - kPosOffset);
+		SmartDashboard.putNumber("Encoder", (this.mArmEnc.getAbsolutePosition() * 2.0 * Math.PI) - kPosOffset);
 	}
 }
