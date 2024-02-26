@@ -77,7 +77,7 @@ public class Arm extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double pos = -this.mArmEnc.getAbsolutePosition() + kPosOffset;
+		double pos = -this.mArmEnc.getDistance() + kPosOffset;
 		this.mArmEncVel = (pos - this.mArmEncPos) / 0.02; // Rotations per second
 		this.mArmEncPos = pos;
 
@@ -90,6 +90,6 @@ public class Arm extends SubsystemBase {
 	}
 
 	public Command cmdDynamic(final Direction dir) {
-		return this.mSysIdRout.quasistatic(dir);
+		return this.mSysIdRout.dynamic(dir);
 	}
 }
