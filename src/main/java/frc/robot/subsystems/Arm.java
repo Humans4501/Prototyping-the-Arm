@@ -25,11 +25,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * kD : 40.744
  */
 
-
 /**
  * Arm subsystem
  */
 public class Arm extends SubsystemBase {
+	private static final double kS = 0.34018;
+	private static final double kV = 6.4525;
+	private static final double kA = 11.213;
+	private static final double kG =  0.21586;
+
+	private static final double kP = 67.437;
+	private static final double kD = 40.744;
+
 	private final int kArmLeftCanID = 40;
 	private final int kArmRightCanID = 41;
 	private final int kEncoderDIO = 0;
@@ -42,9 +49,9 @@ public class Arm extends SubsystemBase {
 
 	private final DutyCycleEncoder mArmEnc = new DutyCycleEncoder(kEncoderDIO);
 	/** PID: attempt to use same gains as the SparkMAX */
-	private final PIDController mArmPid = new PIDController(0.0, 0.0, 0.0);
-	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rot, A:(volt*sec^2)/rot */
-	private final ArmFeedforward mArmFf = new ArmFeedforward(0.0, 0.0, 0.0, 0.0);
+	private final PIDController mArmPid = new PIDController(kP, 0.0, kD);
+	/** Use volts 4 units: S:volts, G:volts, V:(volt*sec)/rad, A:(volt*sec^2)/rad */
+	private final ArmFeedforward mArmFf = new ArmFeedforward(kS, kG, kV, kA);
 
 	public Arm() {
 		this.mArmLeft.follow(this.mArmRight, true);
@@ -63,7 +70,7 @@ public class Arm extends SubsystemBase {
 			double rot = SmartDashboard.getNumber("Set Radians", 0.0);
 
 			SmartDashboard.putNumber("MotorVoltage",
-				this.mArmPid.calculate(this.mArmEnc.getAbsolutePosition() * 2.0 * Math.PI) +
+				this.mArmPid.calculate(this.mArmEnc.getDistance() * 2.0 * Math.PI) +
 				this.mArmFf.calculate(rot, 0.0)
 			);
 		});
