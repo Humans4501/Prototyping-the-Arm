@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -19,6 +21,9 @@ import frc.robot.subsystems.Arm;
  */
 public class RobotContainer {
 	private final Arm sArm = new Arm();
+
+	@SuppressWarnings("unused")
+	private final PowerDistribution mPdh = new PowerDistribution(58, ModuleType.kRev);
 
 	private final CommandJoystick mJoy = new CommandJoystick(0);
 
@@ -42,6 +47,7 @@ public class RobotContainer {
 		// new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
 
 		this.mJoy.button(1).whileTrue(this.sArm.cmdRun());
+		this.mJoy.button(2).whileTrue(this.sArm.cmdRunReverse());
 	}
 
 	/**
